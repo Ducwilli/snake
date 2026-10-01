@@ -1,0 +1,8 @@
+# Compilation Maven
+target/
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
