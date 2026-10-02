@@ -29,12 +29,17 @@ public class Position {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(){
         return Objects.hash(x, y);
     }
 
     public Position translate(Position p){
         return new Position(x + p.getX(), y + p.getY());
+    }
+
+    @Override 
+    public String toString(){
+        return "(" + x + ", " + y + ")";
     }
 
 }
