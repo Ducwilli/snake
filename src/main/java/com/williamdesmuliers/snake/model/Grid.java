@@ -7,7 +7,7 @@ public class Grid {
 
     public Grid(int width, int height) {
         if (width < 1 || height < 1) {
-            throw new IllegalArgumentException("Grid dimensions must be strictly positive (width=\" + width + \", height=\" + height + \")\"");
+            throw new IllegalArgumentException("Grid dimensions must be strictly positive (width=" + width + ", height=" + height + ")");
         }
         this.width = width;
         this.height = height;
