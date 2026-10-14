@@ -9,6 +9,7 @@ public class Snake {
 
      public void init(Grid g){
         Position origineSnake = new Position(g.getWidth() / 2 ,g.getHeight() / 3);
+        snake.clear();
         snake.addFirst(origineSnake);
         this.move(Direction.RIGHT, true);
         this.move(Direction.RIGHT, true);
