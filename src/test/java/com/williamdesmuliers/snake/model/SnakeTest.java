@@ -29,8 +29,8 @@ class SnakeTest {
     @Test
     @DisplayName("après init, la tête est à la position de départ attendue")
     void initPlaceLaTeteAuBonEndroit() {
-        // grille 20x20 : width/2 = 10 + 2, height/3 = 6
-        assertEquals(new Position(12, 6), snake.getHead());
+        // grille 20x20 : width/4 = 5 + 2, height/2 = 10
+        assertEquals(new Position(7, 10), snake.getHead());
     }
 
     @Test
@@ -82,7 +82,7 @@ class SnakeTest {
     void getHeadRenvoieLaDerniereTete() {
         snake.move(Direction.RIGHT);
         snake.move(Direction.UP);
-        Position attendue = new Position(12, 6)
+        Position attendue = new Position(7, 10)
                 .translate(Direction.RIGHT.getVector())
                 .translate(Direction.UP.getVector());
         assertEquals(attendue, snake.getHead());

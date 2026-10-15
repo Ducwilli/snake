@@ -8,7 +8,7 @@ public class Snake {
     private Deque<Position> snake;
 
      public void init(Grid g){
-        Position origineSnake = new Position(g.getWidth() / 2 ,g.getHeight() / 3);
+        Position origineSnake = new Position(g.getWidth() / 4,g.getHeight() / 2);
         snake.clear();
         snake.addFirst(origineSnake);
         this.move(Direction.RIGHT, true);
