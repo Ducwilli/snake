@@ -1,5 +1,6 @@
 package com.williamdesmuliers.snake;
 
+import com.williamdesmuliers.snake.control.InputController;
 import com.williamdesmuliers.snake.model.Game;
 import com.williamdesmuliers.snake.view.GameView;
 
@@ -26,11 +27,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(createContent()));
+        Scene scene = new Scene(createContent());
+        GameView view = new GameView(canvas, game, CASE_SIZE);
+        InputController controller = new InputController(game, view);
+
+        stage.setScene(scene);
         stage.setTitle("Snake");
         stage.show();
         
-        GameView view = new GameView(canvas, game, CASE_SIZE);
+        controller.attachTo(scene);
         view.render();
     }
     public static void main(String[] args) {
