@@ -6,6 +6,7 @@ public class Game {
     private final Snake snake;      
     private final Apple apple;      
     private Direction direction;   
+    private Direction nextDirection;
     private int score;             
     private GameState state; 
 
@@ -20,13 +21,14 @@ public class Game {
         snake.init(grid);       
         apple.init(grid, snake); 
         direction = Direction.RIGHT;
+        nextDirection = Direction.RIGHT;
         score = 0;
         state = GameState.RUNNING;
     }
 
     public void setDirection(Direction newDir){
         if(!direction.isOpposite(newDir)){
-            direction = newDir;
+            nextDirection = newDir;
         }
     }
 
@@ -39,8 +41,12 @@ public class Game {
     }
 
     public void tick(){
+        
+
         if (state != GameState.RUNNING) return;
         
+        direction = nextDirection;
+
         Position futureHead = snake.getHead().translate(direction.getVector());
         if (isDeadly(futureHead)) { 
             state = GameState.LOST; 

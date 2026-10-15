@@ -47,6 +47,7 @@ class GameTest {
     void demiTourIgnore() {
         // le serpent va à droite ; on demande la gauche (demi-tour)
         game.setDirection(Direction.LEFT);
+        game.tick();
         assertEquals(Direction.RIGHT, game.getDirection());
     }
 
@@ -54,6 +55,7 @@ class GameTest {
     @DisplayName("un virage à 90° est accepté")
     void virageAccepte() {
         game.setDirection(Direction.UP);
+        game.tick();
         assertEquals(Direction.UP, game.getDirection());
     }
 
@@ -90,6 +92,20 @@ class GameTest {
         game.setDirection(Direction.DOWN);
         game.tick();
         assertEquals(GameState.LOST, game.getState());
+    }
+
+    @Test
+    @DisplayName("deux virages rapides ne provoquent pas de demi-tour")
+    void deuxViragesRapidesPasDeDemiTour() {
+        // serpent va à droite ; on enchaîne UP puis LEFT avant le prochain tick
+        game.setDirection(Direction.UP);
+        game.setDirection(Direction.LEFT);   // LEFT serait un demi-tour par rapport à RIGHT
+        game.tick();
+
+        // le serpent doit monter (UP retenu), pas faire demi-tour vers LEFT
+        assertEquals(Direction.UP, game.getDirection());
+        // et surtout, il ne doit pas être mort
+        assertEquals(GameState.RUNNING, game.getState());
     }
 
     // --- utilitaire : forcer la position de la pomme via réflexion ---

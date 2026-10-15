@@ -1,7 +1,6 @@
 package com.williamdesmuliers.snake.control;
 
 import com.williamdesmuliers.snake.model.Game;
-import com.williamdesmuliers.snake.view.GameView;
 import com.williamdesmuliers.snake.model.Direction;
 
 import javafx.scene.Scene;
@@ -10,11 +9,9 @@ import javafx.scene.input.KeyEvent;
 public class InputController {
 
     private final Game game;
-    private final GameView view;
 
-    public InputController(Game game, GameView view) {
+    public InputController(Game game) {
         this.game = game;
-        this.view = view;
     }
 
     public void attachTo(Scene scene) {
@@ -29,8 +26,6 @@ public class InputController {
             case RIGHT, D -> game.setDirection(Direction.RIGHT);
             default -> { }   // toute autre touche : on ignore
         }
-        game.tick();
-        view.render();
     }
     
 }
