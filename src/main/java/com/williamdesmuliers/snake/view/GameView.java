@@ -1,6 +1,7 @@
 package com.williamdesmuliers.snake.view;
 
 import com.williamdesmuliers.snake.model.Game;
+import com.williamdesmuliers.snake.model.GameState;
 import com.williamdesmuliers.snake.model.Position;
 
 import javafx.scene.canvas.Canvas;
@@ -33,6 +34,26 @@ public class GameView {
         }
     }
 
+    private void drawScore(){
+        String texte = "SCORE : " + game.getScore();
+
+        gc.setFill(Color.WHITE);
+        gc.fillText(texte, 15, 20);
+    }
+
+    private void drawGameOver(){
+        double x = game.getGrid().getWidth() * caseSize / 2.0;
+        double y = game.getGrid().getHeight() * caseSize / 2.0;
+
+        gc.setFill(Color.WHITE);
+
+        switch (game.getState()) {
+            case GameState.WON -> gc.fillText("Victoire", x, y);
+            case GameState.LOST -> gc.fillText("Perdu", x, y);
+            default -> { }
+        }
+    }
+
     public void render() {
         int canvasHeight = caseSize * game.getGrid().getHeight();
         int canvasWidth = caseSize * game.getGrid().getWidth();
@@ -53,6 +74,8 @@ public class GameView {
         }
 
         drawGrid();
+        drawScore();
+        if(game.getState() != GameState.RUNNING){drawGameOver();}
     }
 
 }
