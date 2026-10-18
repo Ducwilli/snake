@@ -2,6 +2,8 @@ package com.williamdesmuliers.snake;
 
 import com.williamdesmuliers.snake.control.InputController;
 import com.williamdesmuliers.snake.model.Game;
+import com.williamdesmuliers.snake.model.GameState;
+import com.williamdesmuliers.snake.storage.HighScoreRepository;
 import com.williamdesmuliers.snake.view.GameView;
 
 import javafx.animation.KeyFrame;
@@ -20,6 +22,9 @@ public class Main extends Application {
     private static final int FRAME_TIME = 150;   // millisecondes entre deux déplacements
     private final Game game = new Game(20, 20);
     private Canvas canvas;
+    private HighScoreRepository repo;
+    private int highScore;
+    private boolean scoreSaved;
 
     private Parent createContent() {
         int canvasHeight = CASE_SIZE * game.getGrid().getHeight();
@@ -34,7 +39,17 @@ public class Main extends Application {
             Duration.millis(FRAME_TIME),
             event -> {
                 game.tick();
-                view.render();
+
+                if(game.getState() == GameState.RUNNING){scoreSaved = false;}
+                if (game.getState() != GameState.RUNNING && !scoreSaved){
+                    if(game.getScore() > highScore){
+                        highScore = game.getScore();
+                        repo.save(highScore);
+                    }
+                    scoreSaved = true;
+                }
+
+                view.render(highScore);
             }
         );
 
@@ -49,12 +64,16 @@ public class Main extends Application {
         GameView view = new GameView(canvas, game, CASE_SIZE);
         InputController controller = new InputController(game);
 
+        repo = new HighScoreRepository();
+        highScore = repo.load();  
+        scoreSaved = false;
+
         stage.setScene(scene);
         stage.setTitle("Snake");
         stage.show();
         
         controller.attachTo(scene);
-        view.render();
+        view.render(highScore);
         startGameLoop(view); 
     }
     public static void main(String[] args) {

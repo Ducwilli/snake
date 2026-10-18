@@ -34,11 +34,13 @@ public class GameView {
         }
     }
 
-    private void drawScore(){
+    private void drawScore(int highScore){
         String texte = "SCORE : " + game.getScore();
+        String texteBest = "BEST SCORE : " + Math.max(game.getScore(), highScore);
 
         gc.setFill(Color.WHITE);
         gc.fillText(texte, 15, 20);
+        gc.fillText(texteBest, 15, 40);
     }
 
     private void drawGameOver(){
@@ -54,7 +56,7 @@ public class GameView {
         }
     }
 
-    public void render() {
+    public void render(int highScore) {
         int canvasHeight = caseSize * game.getGrid().getHeight();
         int canvasWidth = caseSize * game.getGrid().getWidth();
         Position pomme = game.getApple().getPosition();
@@ -74,7 +76,7 @@ public class GameView {
         }
 
         drawGrid();
-        drawScore();
+        drawScore(highScore);
         if(game.getState() != GameState.RUNNING){drawGameOver();}
     }
 
