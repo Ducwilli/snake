@@ -3,6 +3,7 @@ package com.williamdesmuliers.snake.view;
 import com.williamdesmuliers.snake.model.Game;
 import com.williamdesmuliers.snake.model.GameState;
 import com.williamdesmuliers.snake.model.Position;
+import com.williamdesmuliers.snake.model.Direction;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,6 +18,7 @@ public class GameView {
 
     private final Image appleImage;
     private final Image bodyImage;
+    private final Image headImage;
 
     public GameView(Canvas canvas, Game game, int caseSize) {
         gc = canvas.getGraphicsContext2D();
@@ -24,7 +26,8 @@ public class GameView {
         this.caseSize = caseSize;
 
         appleImage = new Image(getClass().getResourceAsStream("/assets/apple.png"));
-        bodyImage = new Image(getClass().getResourceAsStream("/assets/body.png"));  
+        bodyImage = new Image(getClass().getResourceAsStream("/assets/body.png")); 
+        headImage = new Image(getClass().getResourceAsStream("/assets/head.png")); 
     }
 
     private void drawGrid(){
@@ -39,6 +42,28 @@ public class GameView {
             int y = i * caseSize;
             gc.strokeLine(0, y, game.getGrid().getWidth() * caseSize, y);
         }
+    }
+
+    private double angleOf(Direction direction) {
+        return switch (direction) {
+            case Direction.RIGHT -> 0;
+            case Direction.DOWN  -> 90;
+            case Direction.LEFT  -> 180;
+            case Direction.UP    -> 270;
+        };
+    }
+
+    private void drawRotated(Image image, int caseX, int caseY, double angle) {
+        double pixelX = caseX * caseSize;
+        double pixelY = caseY * caseSize;
+
+        gc.save();
+        gc.translate(pixelX + caseSize / 2.0,
+                    pixelY + caseSize / 2.0);
+        gc.rotate(angle);
+        gc.drawImage(image, -caseSize / 2.0, -caseSize / 2.0,
+                    caseSize, caseSize);
+        gc.restore();
     }
 
     private void drawScore(int highScore){
@@ -73,8 +98,14 @@ public class GameView {
 
         gc.drawImage(appleImage, apple.getX() * caseSize, apple.getY() * caseSize, caseSize, caseSize);
 
+        boolean isHead = true;
         for (Position p : game.getSnake().getSnake()) {
-            gc.drawImage(bodyImage, p.getX() * caseSize, p.getY() * caseSize, caseSize, caseSize);
+            if (isHead) {
+                drawRotated(headImage, p.getX(), p.getY(), angleOf(game.getDirection()));
+                isHead = false;
+            } else {
+                gc.drawImage(bodyImage, p.getX() * caseSize, p.getY() * caseSize, caseSize, caseSize);
+            }
         }
 
         drawGrid();
