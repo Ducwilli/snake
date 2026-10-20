@@ -6,6 +6,7 @@ import com.williamdesmuliers.snake.model.Position;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class GameView {
@@ -14,10 +15,16 @@ public class GameView {
     private final Game game;
     private final int caseSize; 
 
+    private final Image appleImage;
+    private final Image bodyImage;
+
     public GameView(Canvas canvas, Game game, int caseSize) {
         gc = canvas.getGraphicsContext2D();
         this.game = game;
         this.caseSize = caseSize;
+
+        appleImage = new Image(getClass().getResourceAsStream("/assets/apple.png"));
+        bodyImage = new Image(getClass().getResourceAsStream("/assets/body.png"));  
     }
 
     private void drawGrid(){
@@ -35,12 +42,12 @@ public class GameView {
     }
 
     private void drawScore(int highScore){
-        String texte = "SCORE : " + game.getScore();
-        String texteBest = "BEST SCORE : " + Math.max(game.getScore(), highScore);
+        String text = "SCORE : " + game.getScore();
+        String textBest = "MEILLEUR SCORE : " + Math.max(game.getScore(), highScore);
 
         gc.setFill(Color.WHITE);
-        gc.fillText(texte, 15, 20);
-        gc.fillText(texteBest, 15, 40);
+        gc.fillText(text, 15, 20);
+        gc.fillText(textBest, 15, 40);
     }
 
     private void drawGameOver(){
@@ -59,20 +66,15 @@ public class GameView {
     public void render(int highScore) {
         int canvasHeight = caseSize * game.getGrid().getHeight();
         int canvasWidth = caseSize * game.getGrid().getWidth();
-        Position pomme = game.getApple().getPosition();
+        Position apple = game.getApple().getPosition();
 
-        // 1. Effacer le fond (repartir d'une ardoise propre)
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
-        // 2. Dessiner la pomme
-        gc.setFill(Color.RED);
-        gc.fillRect(pomme.getX() * caseSize, pomme.getY() * caseSize, caseSize, caseSize);
+        gc.drawImage(appleImage, apple.getX() * caseSize, apple.getY() * caseSize, caseSize, caseSize);
 
-        // 3. Dessiner chaque segment du serpent
-        gc.setFill(Color.GREEN);
         for (Position p : game.getSnake().getSnake()) {
-            gc.fillRect(p.getX() * caseSize, p.getY() * caseSize, caseSize, caseSize);
+            gc.drawImage(bodyImage, p.getX() * caseSize, p.getY() * caseSize, caseSize, caseSize);
         }
 
         drawGrid();

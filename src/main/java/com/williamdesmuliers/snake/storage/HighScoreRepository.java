@@ -18,8 +18,8 @@ public class HighScoreRepository {
     public int load() {
         if(!Files.exists(path)){return 0;}
         try{
-            String contenu = Files.readString(path);
-            return Integer.parseInt(contenu.trim());
+            String content = Files.readString(path);
+            return Integer.parseInt(content.trim());
         }    
         catch (Exception e){
             return 0;

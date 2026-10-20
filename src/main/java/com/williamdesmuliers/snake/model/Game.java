@@ -41,8 +41,6 @@ public class Game {
     }
 
     public void tick(){
-        
-
         if (state != GameState.RUNNING) return;
         
         direction = nextDirection;

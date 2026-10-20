@@ -22,7 +22,6 @@ public class InputController {
 
     private void handleKey(KeyEvent event) {
         if (game.getState() == GameState.RUNNING) {
-            // partie en cours → les touches dirigent le serpent
             switch (event.getCode()) {
                 case UP, Z    -> game.setDirection(Direction.UP);
                 case DOWN, S  -> game.setDirection(Direction.DOWN);
@@ -31,7 +30,6 @@ public class InputController {
                 default -> { }
             }
         } else {
-            // partie finie (LOST ou WON) → seule la touche de replay agit
             if (event.getCode() == KeyCode.ENTER) {
                 game.init();
             }

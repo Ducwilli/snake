@@ -5,18 +5,18 @@ import java.util.Deque;
 
 public class Snake {
     
-    private Deque<Position> snake;
-
-     public void init(Grid g){
+    private final Deque<Position> snake;
+    
+    public Snake(){
+            this.snake = new ArrayDeque<Position>();
+        }
+    
+    public void init(Grid g){
         Position origineSnake = new Position(g.getWidth() / 4,g.getHeight() / 2);
         snake.clear();
         snake.addFirst(origineSnake);
         this.move(Direction.RIGHT, true);
         this.move(Direction.RIGHT, true);
-    }
-
-    public Snake(){
-        this.snake = new ArrayDeque<Position>();
     }
 
     public void move(Direction d) {
